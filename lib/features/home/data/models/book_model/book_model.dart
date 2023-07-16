@@ -5,31 +5,7 @@ import 'sale_info.dart';
 import 'search_info.dart';
 import 'volume_info.dart';
 
-class BookModel {
-  String kind;
-  int totalItems;
-  List<Item> items;
-
-  BookModel({
-    required this.kind,
-    required this.totalItems,
-    required this.items,
-  });
-
-  factory BookModel.fromJson(Map<String, dynamic> json) => BookModel(
-        kind: json["kind"],
-        totalItems: json["totalItems"],
-        items: List<Item>.from(json["items"].map((x) => Item.fromJson(x))),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "kind": kind,
-        "totalItems": totalItems,
-        "items": List<dynamic>.from(items.map((x) => x.toJson())),
-      };
-}
-
-class Item extends BookEntity {
+class BookModel extends BookEntity {
   String? kind;
   String? id;
   String? etag;
@@ -39,42 +15,50 @@ class Item extends BookEntity {
   AccessInfo? accessInfo;
   SearchInfo? searchInfo;
 
-  Item({
-    required this.kind,
-    required this.id,
-    required this.etag,
-    required this.selfLink,
-    required this.volumeInfo,
-    required this.saleInfo,
-    required this.accessInfo,
-    required this.searchInfo,
+  BookModel({
+    this.kind,
+    this.id,
+    this.etag,
+    this.selfLink,
+    this.volumeInfo,
+    this.saleInfo,
+    this.accessInfo,
+    this.searchInfo,
   }) : super(
+            authorName: volumeInfo!.authors!.first,
+            image: volumeInfo.imageLinks?.thumbnail,
             bookId: id!,
-            title: volumeInfo!.title,
-            author: volumeInfo.authors!.first,
-            image: volumeInfo.imageLinks!.thumbnail,
-            price: 0.0,
-            rating: volumeInfo.averageRating);
+            title: volumeInfo.title,
+            rating: volumeInfo.averageRating,
+            price: 0.0);
 
-  factory Item.fromJson(Map<String, dynamic> json) => Item(
-        kind: json["kind"],
-        id: json["id"],
-        etag: json["etag"],
-        selfLink: json["selfLink"],
-        volumeInfo: VolumeInfo.fromJson(json["volumeInfo"]),
-        saleInfo: SaleInfo.fromJson(json["saleInfo"]),
-        accessInfo: AccessInfo.fromJson(json["accessInfo"]),
-        searchInfo: SearchInfo.fromJson(json["searchInfo"]),
+  factory BookModel.fromJson(Map<String, dynamic> json) => BookModel(
+        kind: json['kind'] as String?,
+        id: json['id'] as String?,
+        etag: json['etag'] as String?,
+        selfLink: json['selfLink'] as String?,
+        volumeInfo: json['volumeInfo'] == null
+            ? null
+            : VolumeInfo.fromJson(json['volumeInfo'] as Map<String, dynamic>),
+        saleInfo: json['saleInfo'] == null
+            ? null
+            : SaleInfo.fromJson(json['saleInfo'] as Map<String, dynamic>),
+        accessInfo: json['accessInfo'] == null
+            ? null
+            : AccessInfo.fromJson(json['accessInfo'] as Map<String, dynamic>),
+        searchInfo: json['searchInfo'] == null
+            ? null
+            : SearchInfo.fromJson(json['searchInfo'] as Map<String, dynamic>),
       );
 
   Map<String, dynamic> toJson() => {
-        "kind": kind,
-        "id": id,
-        "etag": etag,
-        "selfLink": selfLink,
-        "volumeInfo": volumeInfo!.toJson(),
-        "saleInfo": saleInfo!.toJson(),
-        "accessInfo": accessInfo!.toJson(),
-        "searchInfo": searchInfo!.toJson(),
+        'kind': kind,
+        'id': id,
+        'etag': etag,
+        'selfLink': selfLink,
+        'volumeInfo': volumeInfo?.toJson(),
+        'saleInfo': saleInfo?.toJson(),
+        'accessInfo': accessInfo?.toJson(),
+        'searchInfo': searchInfo?.toJson(),
       };
 }

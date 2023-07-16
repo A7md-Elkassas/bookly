@@ -1,15 +1,16 @@
+import 'package:bookley_app/features/home/domain/entitites/book_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:bookley_app/core/utils/styles.dart';
 
+import '../book_rating.dart';
+import '../custom_book_details_appbar.dart';
+import '../custom_book_image.dart';
+import '../similar_books.dart';
 import 'book_details_actions.dart';
-import 'book_rating.dart';
-import 'custom_book_image.dart';
-import 'custom_book_details_appbar.dart';
-import 'similar_books.dart';
 
 class BookDetailsBody extends StatelessWidget {
-  const BookDetailsBody({super.key});
-
+  const BookDetailsBody({super.key, required this.book});
+  final BookEntity? book;
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
@@ -27,16 +28,23 @@ class BookDetailsBody extends StatelessWidget {
                   padding: EdgeInsets.symmetric(
                       vertical: MediaQuery.of(context).size.height * 0.05,
                       horizontal: MediaQuery.of(context).size.width * 0.19),
-                  child: const CustomBookImage(),
+                  child: CustomBookImage(
+                    imageUrl: book!.image ?? "",
+                  ),
                 ),
-                const Text("The jungle Book", style: Styles.textStyle30),
+                Text(
+                  book!.title!,
+                  style: Styles.textStyle30,
+                  textAlign: TextAlign.center,
+                ),
                 const SizedBox(height: 8),
-                Text("rubyard kiblling",
+                Text(book!.authorName!,
                     style: Styles.textStyle18
                         .copyWith(fontStyle: FontStyle.italic)),
                 const SizedBox(height: 18),
-                const BookRating(
+                BookRating(
                   mainAxisAlignment: MainAxisAlignment.center,
+                  rating: book!.rating ?? 0.0,
                 ),
                 const SizedBox(height: 48),
                 const BookDetailsActions(),

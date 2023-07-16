@@ -1,14 +1,12 @@
+import 'package:bookley_app/features/home/presentation/views/widgets/book_details/book_details_body_bloc_builder.dart';
 import 'package:flutter/material.dart';
 
-import 'widgets/book_details_body.dart';
-
 class BookDetailsView extends StatelessWidget {
-  const BookDetailsView({super.key});
-
+  const BookDetailsView({super.key, this.bookId});
+  final String? bookId;
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: SafeArea(child: BookDetailsBody()),
-    );
+    return Scaffold(
+        body: SafeArea(child: BookDetailsBodyBlocBuilder(bookId: bookId!)));
   }
 }
